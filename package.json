@@ -17,7 +17,6 @@
   "scripts": {
    
     "start": "webpack --config webpack.config.js",
-    "build": "yarn add webpack",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
