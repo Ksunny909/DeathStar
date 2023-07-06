@@ -15,8 +15,8 @@
     "webpack": "^5.88.0"
   },
   "scripts": {
-    "start": "webpack serve --mode=development",
-    "build": "yarn add webpack",
+   
+    "start": "webpack --config webpack.config.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
