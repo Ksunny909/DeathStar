@@ -29,10 +29,11 @@ class Queue {
 		return this.elements[n];
 	}
 }
-
-// //УДАЛЯТЬ НЕЛЬЗЯ
-//  //получение списка РАБОЧИХ конденсаторов
+let flag;
+//УДАЛЯТЬ НЕЛЬЗЯ
+//получение списка РАБОЧИХ конденсаторов
 let q_capacitors = new Queue();
+let q_cell = new Queue();
 let url1 = 'https://deathstarapi-glazynovand.b4a.run/api/v1/energy/state/alpha_cell/battery';
 let url2 = 'https://deathstarapi-glazynovand.b4a.run/api/v1/energy/state/theta_cell/battery';
 function list_capacitors() {
@@ -45,29 +46,47 @@ function list_capacitors() {
 					return;
 				}
 				response.json().then(function (data) {
-					// console.log(data)
+					console.log(data)
 					for (let i = 0; i < 64; i ++){
-						if (data.alpha_cell.battery.capacitors[i].is_on == true){
+						if (data.alpha_cell.battery.capacitors[i].is_on == false){
 							// console.log(data.alpha_cell.battery.capacitors[i].name)
+							flag = 1;
 							if(!q_capacitors.isEmpty){
-								for (let j =- 1; j < q_capacitors.length; j++){
-									if (q_capacitors.find[j] == data.alpha_cell.battery.capacitors[i].name)
-										break;
-									else 
-										q_capacitors.enqueue(data.alpha_cell.battery.capacitors[i].name);
+								//flag = 1;
+								for (let j = 0; j < q_capacitors.length; j++){
+									if (q_capacitors.find[j] == data.alpha_cell.battery.capacitors[i].name){
+										flag = 0;
+										break
+									}
 								}
+								if (flag == 1){
+									q_capacitors.enqueue(data.alpha_cell.battery.capacitors[i].name);
+									q_cell.enqueue('alpha_cell');
+								}
+
 							}
-							else q_capacitors.enqueue(data.alpha_cell.battery.capacitors[i].name);
+							else
+							{
+								q_capacitors.enqueue(data.alpha_cell.battery.capacitors[i].name);
+								q_cell.enqueue('alpha_cell');
+							}
 						}
-						//else break
 					}
+					//проверка можно удалить
+					// console.log(q_capacitors.length);
+					// console.log(q_cell.length)
+					// for (let j = 0; j < q_capacitors.length; j++) {
+					// 	console.log(q_capacitors.find(j));
+					// 	console.log(q_cell.find(j));
+					// }
 				});
 			}
 		)
 		.catch(function (err) {
 			console.log('Fetch Error :-S', err);
 		}
-	);
+	)
+
 	fetch(url2)
 		.then(
 			function (response) {
@@ -80,24 +99,38 @@ function list_capacitors() {
 					// console.log(data)
 					for (let i = 0; i < 64; i++) {
 						if (data.theta_cell.battery.capacitors[i].is_on == true) {
+							flag = 1;
 							// console.log(data.theta_cell.battery.capacitors[i].name)
 							if (!q_capacitors.isEmpty) {
-								for (let j = - 1; j < q_capacitors.length; j++) {
-									if (q_capacitors.find[j] == data.theta_cell.battery.capacitors[i].name)
-										break;
-									else
-										q_capacitors.enqueue(data.theta_cell.battery.capacitors[i].name);
+								//flag = 1;
+								for (let j = 0; j < q_capacitors.length; j++) {
+									if (q_capacitors.find[j] == data.theta_cell.battery.capacitors[i].name){ 
+										flag = 0; 
+										break
+									}
+								}
+								if (flag == 1){
+									q_capacitors.enqueue(data.theta_cell.battery.capacitors[i].name);
+									q_cell.enqueue('theta_cell');
 								}
 							}
-							else q_capacitors.enqueue(data.theta_cell.battery.capacitors[i].name);
+							else {
+								q_capacitors.enqueue(data.theta_cell.battery.capacitors[i].name);
+								q_cell.enqueue('theta_cell');
+							}
 						}
 						//else break
 					}
 					//проверка 
 					//можно удалить
 					// console.log(q_capacitors.peek(0));
-					// console.log(q_capacitors.find(4));
-					// console.log(q_capacitors.find(1));
+					// console.log(q_capacitors.length);
+					// console.log("q_cell = "+q_cell.length);
+					// for (let j = 0; j < q_capacitors.length; j++) {
+					// 	console.log(q_capacitors.find(j));
+					// 	console.log(q_cell.find(j));
+					console.log("yep");
+					// }
 				});
 			}
 		)
@@ -106,9 +139,10 @@ function list_capacitors() {
 		}
 	);
 }
+//list_capacitors();
 
-//УДАЛЯТЬ НЕЛЬЗЯ
-//получение списков СВОБОДНЫХ ремонтных бригад
+// //УДАЛЯТЬ НЕЛЬЗЯ
+// //получение списков СВОБОДНЫХ ремонтных бригад
 
 let q_teams = new Queue();
 function list_brigades(){
@@ -127,20 +161,24 @@ function list_brigades(){
 						for (var j in val) {
 							if ((j == "is_busy") && (val.is_busy == false) ){
 								if (!q_teams.isEmpty) {
-									for (let j = - 1; j < q_teams.length; j++) {
-										if (q_teams.find[j] == key)
-											break;
-										else
-											q_teams.enqueue(key);
+									flag = 1;
+									for (let j = 0; j < q_teams.length; j++) {
+										if (q_teams.find[j] == key){
+											flag = 0;
+											break
+										}
+									}
+									if (flag == 1) {
+										q_teams.enqueue(key);
 									}
 								}
-								else q_teams.enqueue(key);
-
-								console.log(key);
+								else {
+									q_teams.enqueue(key);
+								}
 							}
 						}
 					}
-					console.log(q_teams.length);
+					// console.log(q_teams.length);
 				});
 			}
 		)
@@ -149,43 +187,54 @@ function list_brigades(){
 		}
 	);
 }
-list_brigades();
+//list_brigades();
 
 //УДАЛЯТЬ НЕЛЬЗЯ
-//пока код не работает
 /// отправка ремонтной бригады на объект
 let loc;
 let t_n;
-
-while (q_capacitors.isEmpty()) {
-	list_capacitors()
-}
-while (!q_capacitors.isEmpty()){
-	loc = q_capacitors.dequeue
-	while (q_teams.isEmpty()) {
-		list_brigades();
+let c_n;
+function fix() {
+	while (q_capacitors.length==0) {//пока список пустой обновляем
+		list_capacitors()
 	}
-	t_n = q_teams.dequeue
-	fetch("https://deathstarapi-glazynovand.b4a.run/api/v1/repair/start", {
-		method: "POST",
-
-		body: { team_name: t_n, cell_name: "alpha_cell", location: loc },
-	})
-		.then(response => response.text())
-		.then(console.log('отпавили'));
-}
-
-// fetch("https://deathstarapi-glazynovand.b4a.run/api/v1/repair/start", {
-// 	method: "POST", body: {
-// 		"team_name": "alpha_team",
-// 		"cell_name": "alpha_cell",
-// 		"location": "alpha_cell.battery.capacitors[0]"
-// 	}
-// })
-// 	.then(response => response.text())
-// 	.then(console.log('отправили'));
+	while (!q_capacitors.isEmpty){//пока список не пустой
+		loc = q_capacitors.dequeue
+		while (q_teams.isEmpty) {
+			list_brigades();
+		}
+		t_n = q_teams.dequeue
+		c_n = q_cell.dequeue
+		fetch("https://deathstarapi-glazynovand.b4a.run/api/v1/repair/start", {
+			method: "POST",
+			body: { team_name: t_n, cell_name: c_n, location: loc },
+		})
+			.then(response => response.text())
+			.then(console.log('отпавили'));
 	
-// fetch("https://deathstarapi-glazynovand.b4a.run/api/v1/repair/stop/alpha_team", { method: "POST", body: "unbusy_team" })
+		const req1 = new XMLHttpRequest();
+		const data = JSON.stringify({
+			"team_name": t_n,
+			"cell_name": c_n,
+			"location": loc
+		});
+
+		req1.open("POST", "https://deathstarapi-glazynovand.b4a.run/api/v1/repair/start");
+		req1.setRequestHeader("Content-Type", "application/json");
+
+		req1.send(data);
+		req1.onreadystatechange = function () // Ждём ответа от сервера
+		{
+			if (req1.status == 200) // код 200 (если страница не найдена вернет 404)
+			{
+				console.log("отправили");; // Выводим ответ сервера
+			}
+		}
+	}
+}
+fix();
+	
+// fetch("https://deathstarapi-glazynovand.b4a.run/api/v1/repair/stop/beta_team", { method: "POST", body: "beta_team" })
 //  .then(response => response.text())
 //  .then(console.log('отозвали'));
 
