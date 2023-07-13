@@ -27,7 +27,7 @@ module.exports = {
 		new webpack.CleanPlugin(),
 	],
 	output: {
-		filename: '[name].[contenthash].js',
+		filename: '[name].js',
 		path: path.join(__dirname, 'dist')
 	},
 
