@@ -46,13 +46,11 @@ function list_capacitors() {
 					return;
 				}
 				response.json().then(function (data) {
-					console.log(data)
+					// console.log(data)
 					for (let i = 0; i < 65; i ++){
 						if (data.alpha_cell.battery.capacitors[i].durability != 100){
-							// console.log(data.alpha_cell.battery.capacitors[i].name)
 							flag = 1;
 							if(!q_capacitors.isEmpty){
-								//flag = 1;
 								for (let j = 0; j < q_capacitors.length; j++) {
 									if (q_capacitors.find(j) == data.alpha_cell.battery.capacitors[i].name){
 										flag = 0;
@@ -63,7 +61,7 @@ function list_capacitors() {
 									q_capacitors.enqueue(data.alpha_cell.battery.capacitors[i].name);
 									q_cell.enqueue('alpha_cell');
 									console.log(data.alpha_cell.battery.capacitors[i].name);
-									console.log(q_capacitors.length)
+									// console.log(q_capacitors.length)
 								}
 
 							}
@@ -75,13 +73,6 @@ function list_capacitors() {
 							}
 						}
 					}
-					//проверка можно удалить
-					// console.log(q_capacitors.length);
-					// console.log(q_cell.length)
-					// for (let j = 0; j < q_capacitors.length; j++) {
-					// 	console.log(q_capacitors.find(j));
-					// 	console.log(q_cell.find(j));
-					// }
 				});
 			}
 		)
@@ -99,13 +90,11 @@ function list_capacitors() {
 					return;
 				}
 				response.json().then(function (data) {
-					console.log(data)
+					// console.log(data)
 					for (let i = 0; i < 65; i++) {
 						if (data.theta_cell.battery.capacitors[i].durability != 100) {
 							flag = 1;
-							// console.log(data.theta_cell.battery.capacitors[i].name)
 							if (!q_capacitors.isEmpty) {
-								//flag = 1;
 								for (let j = 0; j < q_capacitors.length; j++) {
 									if (q_capacitors.find(j) == data.theta_cell.battery.capacitors[i].name){ 
 										flag = 0; 
@@ -116,7 +105,7 @@ function list_capacitors() {
 									q_capacitors.enqueue(data.theta_cell.battery.capacitors[i].name);
 									q_cell.enqueue('theta_cell');
 									console.log(data.theta_cell.battery.capacitors[i].name);
-									console.log(q_capacitors.length)
+									// console.log(q_capacitors.length)
 								}
 							}
 							else {
@@ -125,18 +114,7 @@ function list_capacitors() {
 								console.log(data.theta_cell.battery.capacitors[i].name);
 							}
 						}
-						//else break
 					}
-					//проверка 
-					//можно удалить
-					// console.log(q_capacitors.peek(0));
-					// console.log(q_capacitors.length);
-					// console.log("q_cell = "+q_cell.length);
-					// for (let j = 0; j < q_capacitors.length; j++) {
-					// 	console.log(q_capacitors.find(j));
-					// 	console.log(q_cell.find(j));
-					//console.log("yep");
-					// }
 				});
 			}
 		)
@@ -166,8 +144,8 @@ function list_brigades(){
 						var val = data[i];
 						for (var j in val) {
 							if ((j == "is_busy") && (val.is_busy == false) ){
+								flag = 1;
 								if (!q_teams.isEmpty) {
-									flag = 1;
 									for (let j = 0; j < q_teams.length; j++) {
 										if (q_teams.find(j) == key){
 											flag = 0;
@@ -193,79 +171,46 @@ function list_brigades(){
 		}
 	);
 }
-// list_brigades();
 
 // УДАЛЯТЬ НЕЛЬЗЯ
 ///  отправка ремонтной бригады на объект
 
-// let timerId = setInterval(list_capacitors,  3000);
-// setTimeout(() => { clearInterval(timerId); alert("q_capacitors.length"); }, 10000);
-//if (q_capacitors.length == 0) { //пока спис1к пустой обновляем
-// setTimeout(() => { clearInterval(timerId); alert("q_capacitors.length"); }, 2000)
-//}
 let loc;
 let t_n;
 let c_n;
 
-// let timerId = setInterval(list_capacitors, 5000);
-	// setTimeout(() => { console.log("q_capacitors.length"); }, 6000);
-	//while (q_capacitors.length==0) {//пока список пустой обновляем
-	// if (q_capacitors.length == 0) {
-	// 	setInterval(list_capacitors, 1000)
-	// }
-	list_capacitors();
-
-list_brigades();
-// setTimeout(() => { list_brigades() }, 2000);
-// setInterval(list_brigades, 500);
-setTimeout(() => { fix() }, 6000);
+setTimeout(() => { list_capacitors() }, 1000);
+setTimeout(() => { list_brigades() }, 2000);
+setInterval(() => { fix() }, 3000);
 function fix() {
-	// console.log("какой-то мужик"+q_capacitors.peek());
-	//console.log(q_capacitors.dequeue())
-	for (let j = 0; j < q_capacitors.length;j++ ) {//пока список не пустой
-		// console.log("умершие компораторы"+q_capacitors.length)
-		// if (q_teams.length <= 0){
-		// 	list_brigades();
-		// 	//console.log("меньше 0");
-		// }
-		if (q_teams.length > 0){
-			//j++;
-			console.log("пришли чуваки" + q_teams.length)
-			loc = q_capacitors.dequeue();
-			t_n = q_teams.dequeue();
-			c_n = q_cell.dequeue();
-			console.log(loc, t_n, c_n);
-	
-			const req1 = new XMLHttpRequest();
-			const data = JSON.stringify({
-				"location": loc,
-				"team_name": t_n,
-				"cell_name": c_n,
-			});
+	setTimeout(() => { list_capacitors() }, 1000);
+	setTimeout(() => { list_brigades() }, 2000);
+	for (let j = 0; j < q_capacitors.length;j++ ) {
+		
+			if (q_teams.length > 0){
+				// setInterval(() => { list_brigades() }, 500);
+				// setInterval(() => { list_capacitors() }, 5000);
+				
+				j--;
+				loc = q_capacitors.dequeue();
+				t_n = q_teams.dequeue();
+				c_n = q_cell.dequeue();
+				console.log("конденсатор: "+loc +" чинят: "+ t_n + " в блоке: " + c_n);
 
-			req1.open("POST", "https://deathstarapi-glazynovand.b4a.run/api/v1/repair/start");
-			req1.setRequestHeader("Content-Type", "application/json");
+				const req1 = new XMLHttpRequest();
+				const data = JSON.stringify({
+					"location": loc,
+					"team_name": t_n,
+					"cell_name": c_n,
+				});
 
-			req1.send(data);
-			// req1.onreadystatechange = function () // Ждём ответа от сервера
-			// {
-			// 	if (req1.status == 200) // код 200 (если страница не найдена вернет 404)
-			// 	{
-			// 		console.log("отправили");; // Выводим ответ сервера
-			// 	}
-			// }
-		}
-		else{
-			list_brigades();
-		}
+				req1.open("POST", "https://deathstarapi-glazynovand.b4a.run/api/v1/repair/start");
+				req1.setRequestHeader("Content-Type", "application/json");
+				req1.send(data);
+			}
+
 	}
 }
-	
-//пока не нужно
-// fetch("https://deathstarapi-glazynovand.b4a.run/api/v1/repair/stop/beta_team", { method: "POST", body: "beta_team" })
-//  .then(response => response.text())
-//  .then(console.log('отозвали'));
-
 
 // import React from "react"
 // class Hello extends React.Component {
