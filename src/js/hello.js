@@ -44,9 +44,9 @@ function list_capacitors() {
 					console.log('Looks like there was a problem. Status Code: ' +
 						response.status);
 					return;
-				}
+				} 
 				response.json().then(function (data) {
-					// console.log(data)
+					console.log(data)
 					for (let i = 0; i < 65; i ++){
 						if (data.alpha_cell.battery.capacitors[i].durability != 100){
 							flag = 1;
@@ -61,6 +61,7 @@ function list_capacitors() {
 									q_capacitors.enqueue(data.alpha_cell.battery.capacitors[i].name);
 									q_cell.enqueue('alpha_cell');
 									console.log(data.alpha_cell.battery.capacitors[i].name);
+									document.write(data.alpha_cell.battery.capacitors[i].name);
 									// console.log(q_capacitors.length)
 								}
 
@@ -70,6 +71,7 @@ function list_capacitors() {
 								q_capacitors.enqueue(data.alpha_cell.battery.capacitors[i].name);
 								q_cell.enqueue('alpha_cell');
 								console.log(data.alpha_cell.battery.capacitors[i].name);
+								document.write(data.alpha_cell.battery.capacitors[i].name);
 							}
 						}
 					}
@@ -90,7 +92,7 @@ function list_capacitors() {
 					return;
 				}
 				response.json().then(function (data) {
-					// console.log(data)
+					console.log(data)
 					for (let i = 0; i < 65; i++) {
 						if (data.theta_cell.battery.capacitors[i].durability != 100) {
 							flag = 1;
@@ -105,13 +107,14 @@ function list_capacitors() {
 									q_capacitors.enqueue(data.theta_cell.battery.capacitors[i].name);
 									q_cell.enqueue('theta_cell');
 									console.log(data.theta_cell.battery.capacitors[i].name);
-									// console.log(q_capacitors.length)
+									document.write(data.theta_cell.battery.capacitors[i].name);
 								}
 							}
 							else {
 								q_capacitors.enqueue(data.theta_cell.battery.capacitors[i].name);
 								q_cell.enqueue('theta_cell');
 								console.log(data.theta_cell.battery.capacitors[i].name);
+								document.write(data.theta_cell.battery.capacitors[i].name);
 							}
 						}
 					}
@@ -123,7 +126,6 @@ function list_capacitors() {
 		}
 	);
 }
-// list_capacitors();
 
 // //УДАЛЯТЬ НЕЛЬЗЯ
 // //получение списков СВОБОДНЫХ ремонтных бригад
@@ -154,10 +156,12 @@ function list_brigades(){
 									}
 									if (flag == 1) {
 										q_teams.enqueue(key);
+										document.write(key +"<br \/>");
 									}
 								}
 								else {
 									q_teams.enqueue(key);
+									document.write(key +"<br \/>");
 								}
 							}
 						}
@@ -172,8 +176,8 @@ function list_brigades(){
 	);
 }
 
-// УДАЛЯТЬ НЕЛЬЗЯ
-///  отправка ремонтной бригады на объект
+// // УДАЛЯТЬ НЕЛЬЗЯ
+// ///  отправка ремонтной бригады на объект
 
 let loc;
 let t_n;
@@ -196,7 +200,7 @@ function fix() {
 				t_n = q_teams.dequeue();
 				c_n = q_cell.dequeue();
 				console.log("конденсатор: "+loc +" чинят: "+ t_n + " в блоке: " + c_n);
-
+				document.write("конденсатор: " + loc + " чинят: " + t_n + " в блоке: " + c_n)
 				const req1 = new XMLHttpRequest();
 				const data = JSON.stringify({
 					"location": loc,
@@ -212,26 +216,22 @@ function fix() {
 	}
 }
 
-// import React from "react"
-// class Hello extends React.Component {
-// 	render() {
-// 	  return (
-// 	    <div className="Hello">
-// 	      <header className="Hello-header">
-// 	        <p>
-// 	          Edit <code>src/App.js</code> and save to reload.
-// 	        </p>
-// 	      </header>
-// 				<div>
-// 					list_capacitors()
-// 				</div>
-// 				<div>
-// 					list_brigades()
-// 				</div>
-// 	    </div>
-// 	  );
-// 	}
-// }
+import React from "react"
+class Hello extends React.Component {
+	render() {
+	  return (
+	    <div className="Hello">
+	      <header className="Hello-header">
+	        <p>
+	          {/* Добро пожаловать в наблюдательный центр, штурмовик! */}
+	        </p>
+	      </header>
+				<div>
+				</div>
+	    </div>
+	  );
+	}
+}
 	
 
-// export default Hello;
+export default Hello;
